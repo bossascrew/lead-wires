@@ -1,9 +1,9 @@
 name: LeadWires
-version: '1.1.4'
-website: 'https://www.spigotmc.org/resources/leadwires.76515/'
-author: saharNooby
+version: '1.1.5'
+website: 'https://github.com/bossascrew/lead-wires'
+author: saharNooby, CubBossa
 main: me.saharnooby.plugins.leadwires.LeadWires
-api-version: '1.13'
+api-version: '1.16'
 depend: ['ProtocolLib']
 commands:
   add-wire:

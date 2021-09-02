@@ -18,6 +18,7 @@ import me.saharnooby.plugins.leadwires.tracker.PlayerDebugInfo;
 import me.saharnooby.plugins.leadwires.tracker.WireTracker;
 import me.saharnooby.plugins.leadwires.tracker.WireTrackerListener;
 import me.saharnooby.plugins.leadwires.wire.WireStorage;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -191,6 +192,10 @@ public final class LeadWires extends JavaPlugin {
 		return tracker.getPlayerDebugInfo(player);
 	}
 
+	public static void sendMessageParsed(@NonNull CommandSender sender, @NonNull String unparsedMessage, Object... args) {
+		sender.sendMessage(instance.messages.formatMessage(unparsedMessage, args));
+	}
+
 	public static void sendMessage(@NonNull CommandSender sender, @NonNull String key, Object... args) {
 		sender.sendMessage(instance.messages.format(key, args));
 	}
@@ -202,4 +207,13 @@ public final class LeadWires extends JavaPlugin {
 		return instance.api;
 	}
 
+	/**
+	 * Sets a component parser. If you use a custom parser in your plugins that parses more placeholders you can register it here and
+	 * it will be used for parsing lead-wire messages. Placeholders will be in format param[n], so in most cases param1
+	 *
+	 * @param parser a MiniMessage parser, for example created with MiniMessage.Builder
+	 */
+	public static void setMiniMessageParser(MiniMessage parser) {
+		instance.messages.setComponentParser(parser);
+	}
 }

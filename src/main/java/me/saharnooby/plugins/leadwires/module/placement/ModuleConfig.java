@@ -2,7 +2,6 @@ package me.saharnooby.plugins.leadwires.module.placement;
 
 import lombok.Getter;
 import lombok.NonNull;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
@@ -41,9 +40,8 @@ final class ModuleConfig {
 
 		if (messages != null) {
 			for (String key : messages.getKeys(false)) {
-				this.messages.put(key, ChatColor.translateAlternateColorCodes('&', messages.getString(key, key)));
+				this.messages.put(key, messages.getString(key, key));
 			}
 		}
 	}
-
 }
