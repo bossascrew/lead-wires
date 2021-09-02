@@ -64,8 +64,8 @@ final class LeadPlaceListener implements Listener {
 
 				setFirstBlock(player, block);
 				this.module.sendMessage(player, "firstPointSet");
-				return;
 			}
+			return;
 		}
 
 		Block first = (Block) player.getMetadata(KEY).get(0).value();
