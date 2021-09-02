@@ -94,9 +94,15 @@ public final class PlaceToolListener implements Listener {
 			}
 		} else if (e.getAction().name().startsWith("LEFT_CLICK_")) {
 			if (player.hasMetadata(metaKey)) {
-				player.removeMetadata(metaKey, LeadWires.getInstance());
 
-				LeadWires.sendMessage(player, "selectionReset");
+				LeadPointSetEvent event = new LeadPointSetEvent(player, null);
+				Bukkit.getPluginManager().callEvent(event);
+
+				if (!event.isCancelled()) {
+					player.removeMetadata(metaKey, LeadWires.getInstance());
+
+					LeadWires.sendMessage(player, "selectionReset");
+				}
 			} else {
 				LeadWires.sendMessage(player, "noBlockSelected");
 			}
