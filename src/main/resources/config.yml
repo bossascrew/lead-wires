@@ -55,8 +55,8 @@ modules:
       - 'DIORITE_WALL'
     # Messages sent to players.
     messages:
-      firstPointSet: '&aFirst point of the lead set'
-      firstPointReset: '&7First point has been reset'
-      wirePlaced: '&aThe lead has been placed'
-      tooLong: '&cThe lead is too long, limit is %s blocks'
-      noPermission: '&cYou have no permission to place leads'
+      firstPointSet: '<green>First point of the lead set'
+      firstPointReset: '<gray>First point has been reset'
+      wirePlaced: '<green>The lead has been placed'
+      tooLong: '<red>The lead is too long, limit is <param1> blocks'
+      noPermission: '<red>You have no permission to place leads'

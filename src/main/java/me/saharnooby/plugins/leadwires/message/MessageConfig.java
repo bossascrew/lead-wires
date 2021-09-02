@@ -11,7 +11,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,9 +46,10 @@ public final class MessageConfig {
 	}
 
 	public Component formatMessage(@NonNull String message, Object... args) {
-		Template[] templates = new Template[args.length];
-		for (int i = 0; i < args.length; i++) {
-			templates[i] = Template.of("<param" + (i + 1) + ">", args[i].toString());
+		List<Template> templates = new ArrayList<>();
+		int index = 1;
+		for (Object o : args) {
+			templates.add(Template.of("param" + index, o.toString()));
 		}
 		return componentParser.parse(message, templates);
 	}

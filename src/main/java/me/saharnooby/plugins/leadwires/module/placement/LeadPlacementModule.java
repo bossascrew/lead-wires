@@ -116,6 +116,6 @@ public final class LeadPlacementModule extends Module {
 	}
 
 	public void sendMessage(@NonNull CommandSender sender, @NonNull String key, @NonNull Object... args) {
-		LeadWires.sendMessage(sender, this.config.getMessages().getOrDefault(key, "<red>" + key), args);
+		LeadWires.sendMessageParsed(sender, this.config.getMessages().getOrDefault(key, "<red>" + key), args);
 	}
 }
