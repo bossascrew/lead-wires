@@ -3,6 +3,9 @@ package me.saharnooby.plugins.leadwires.listener;
 import lombok.NonNull;
 import me.saharnooby.plugins.leadwires.LeadWires;
 import me.saharnooby.plugins.leadwires.Tools;
+import me.saharnooby.plugins.leadwires.evens.LeadCreateEvent;
+import me.saharnooby.plugins.leadwires.evens.LeadPointSetEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -62,16 +65,32 @@ public final class PlaceToolListener implements Listener {
 					return;
 				}
 
-				player.removeMetadata(metaKey, LeadWires.getInstance());
-				player.setMetadata(metaKey, new FixedMetadataValue(LeadWires.getInstance(), block));
+				LeadPointSetEvent pointSetEvent = new LeadPointSetEvent(player, block);
+				Bukkit.getPluginManager().callEvent(pointSetEvent);
+				if (!pointSetEvent.isCancelled()) {
 
-				placeWire(first, block, isThick);
+					LeadCreateEvent event = new LeadCreateEvent(player, first.getLocation(), block.getLocation());
+					Bukkit.getPluginManager().callEvent(event);
 
-				LeadWires.sendMessage(player, "wirePlaced");
+					if (!event.isCancelled()) {
+
+						player.removeMetadata(metaKey, LeadWires.getInstance());
+						player.setMetadata(metaKey, new FixedMetadataValue(LeadWires.getInstance(), block));
+
+						placeWire(first, block, isThick);
+
+						LeadWires.sendMessage(player, "wirePlaced");
+					}
+				}
 			} else {
-				player.setMetadata(metaKey, new FixedMetadataValue(LeadWires.getInstance(), block));
 
-				LeadWires.sendMessage(player, "firstPointSet");
+				LeadPointSetEvent event = new LeadPointSetEvent(player, block);
+				Bukkit.getPluginManager().callEvent(event);
+				if (!event.isCancelled()) {
+
+					player.setMetadata(metaKey, new FixedMetadataValue(LeadWires.getInstance(), block));
+					LeadWires.sendMessage(player, "firstPointSet");
+				}
 			}
 		} else if (e.getAction().name().startsWith("LEFT_CLICK_")) {
 			if (player.hasMetadata(metaKey)) {

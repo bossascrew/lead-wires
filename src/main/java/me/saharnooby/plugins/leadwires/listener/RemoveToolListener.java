@@ -3,8 +3,10 @@ package me.saharnooby.plugins.leadwires.listener;
 import lombok.NonNull;
 import me.saharnooby.plugins.leadwires.LeadWires;
 import me.saharnooby.plugins.leadwires.Tools;
+import me.saharnooby.plugins.leadwires.evens.LeadRemoveEvent;
 import me.saharnooby.plugins.leadwires.wire.Vector;
 import me.saharnooby.plugins.leadwires.wire.Wire;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,11 +58,21 @@ public final class RemoveToolListener implements Listener {
 			return;
 		}
 
+		int cancelledSize = 0;
 		for (UUID uuid : toRemove) {
-			LeadWires.getApi().removeWire(uuid);
-		}
+			Wire wire = LeadWires.getApi().getWire(uuid).orElse(null);
+			LeadRemoveEvent event = new LeadRemoveEvent(player, wire);
+			Bukkit.getPluginManager().callEvent(event);
 
-		LeadWires.sendMessage(player, "wiresRemovedFromBlock", toRemove.size());
+			if(!event.isCancelled()) {
+				LeadWires.getApi().removeWire(uuid);
+			} else {
+				cancelledSize++;
+			}
+		}
+		if(cancelledSize != toRemove.size()) {
+			 LeadWires.sendMessage(player, "wiresRemovedFromBlock", toRemove.size());
+		}
 	}
 
 	private static boolean isInBlock(@NonNull Location loc, @NonNull Vector vec) {

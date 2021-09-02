@@ -2,9 +2,12 @@ package me.saharnooby.plugins.leadwires.api;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import me.saharnooby.plugins.leadwires.evens.LeadCreatedEvent;
+import me.saharnooby.plugins.leadwires.evens.LeadRemovedEvent;
 import me.saharnooby.plugins.leadwires.tracker.WireTracker;
 import me.saharnooby.plugins.leadwires.wire.Wire;
 import me.saharnooby.plugins.leadwires.wire.WireStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -36,6 +39,9 @@ public final class LeadWiresAPIImpl implements LeadWiresAPI {
 		this.storage.addWire(wire);
 		this.storage.saveAsync();
 		this.tracker.onWireAdded(wire);
+
+		LeadCreatedEvent afterEvent = new LeadCreatedEvent(wire);
+		Bukkit.getPluginManager().callEvent(afterEvent);
 	}
 
 	@Override
@@ -84,6 +90,9 @@ public final class LeadWiresAPIImpl implements LeadWiresAPI {
 
 	@Override
 	public void removeWire(@NonNull UUID uuid) {
+		LeadRemovedEvent event = new LeadRemovedEvent(uuid);
+		Bukkit.getPluginManager().callEvent(event);
+
 		this.storage.removeWire(uuid).ifPresent(wire -> {
 			this.storage.saveAsync();
 			this.tracker.onWireRemoved(wire);

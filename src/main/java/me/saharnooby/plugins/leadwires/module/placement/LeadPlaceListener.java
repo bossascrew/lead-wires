@@ -3,6 +3,9 @@ package me.saharnooby.plugins.leadwires.module.placement;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.saharnooby.plugins.leadwires.LeadWires;
+import me.saharnooby.plugins.leadwires.evens.LeadCreateEvent;
+import me.saharnooby.plugins.leadwires.evens.LeadPointSetEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -54,9 +57,15 @@ final class LeadPlaceListener implements Listener {
 		Block block = e.getClickedBlock();
 
 		if (!player.hasMetadata(KEY)) {
-			setFirstBlock(player, block);
-			this.module.sendMessage(player, "firstPointSet");
-			return;
+
+			LeadPointSetEvent event = new LeadPointSetEvent(player, block);
+			Bukkit.getPluginManager().callEvent(event);
+			if (!event.isCancelled()) {
+
+				setFirstBlock(player, block);
+				this.module.sendMessage(player, "firstPointSet");
+				return;
+			}
 		}
 
 		Block first = (Block) player.getMetadata(KEY).get(0).value();
@@ -66,8 +75,15 @@ final class LeadPlaceListener implements Listener {
 			return;
 		}
 
+		LeadPointSetEvent event = new LeadPointSetEvent(player, block);
+		Bukkit.getPluginManager().callEvent(event);
+		if (event.isCancelled()) {
+			return;
+		}
+
 		if (!config.getAllowedBlocks().contains(first.getType().name())) {
 			// First block was changed.
+
 			setFirstBlock(player, block);
 			this.module.sendMessage(player, "firstPointSet");
 			return;
@@ -80,6 +96,13 @@ final class LeadPlaceListener implements Listener {
 
 		if (first.getLocation().distance(block.getLocation()) > config.getMaxLength()) {
 			this.module.sendMessage(player, "tooLong", config.getMaxLength());
+			return;
+		}
+
+		LeadCreateEvent createEvent = new LeadCreateEvent(player, first.getLocation(), block.getLocation());
+		Bukkit.getPluginManager().callEvent(createEvent);
+
+		if (event.isCancelled()) {
 			return;
 		}
 
@@ -114,9 +137,13 @@ final class LeadPlaceListener implements Listener {
 
 		e.setCancelled(true);
 
-		resetFirstBlock(player);
+		LeadPointSetEvent event = new LeadPointSetEvent(player, null);
+		Bukkit.getPluginManager().callEvent(event);
+		if (!event.isCancelled()) {
+			resetFirstBlock(player);
 
-		this.module.sendMessage(player, "firstPointReset");
+			this.module.sendMessage(player, "firstPointReset");
+		}
 	}
 
 	@EventHandler
@@ -141,13 +168,12 @@ final class LeadPlaceListener implements Listener {
 	}
 
 	private void setFirstBlock(@NonNull Player player, @NonNull Block block) {
-		resetFirstBlock(player);
 
+		resetFirstBlock(player);
 		player.setMetadata(KEY, new FixedMetadataValue(LeadWires.getInstance(), block));
 	}
 
 	private void resetFirstBlock(@NonNull Player player) {
 		player.removeMetadata(KEY, LeadWires.getInstance());
 	}
-
 }

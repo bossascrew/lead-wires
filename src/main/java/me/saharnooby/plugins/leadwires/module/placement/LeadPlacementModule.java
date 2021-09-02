@@ -3,6 +3,7 @@ package me.saharnooby.plugins.leadwires.module.placement;
 import lombok.Getter;
 import lombok.NonNull;
 import me.saharnooby.plugins.leadwires.LeadWires;
+import me.saharnooby.plugins.leadwires.evens.LeadRemoveEvent;
 import me.saharnooby.plugins.leadwires.module.Module;
 import me.saharnooby.plugins.leadwires.util.NMSUtil;
 import me.saharnooby.plugins.leadwires.wire.Vector;
@@ -89,6 +90,13 @@ public final class LeadPlacementModule extends Module {
 		Location dropLoc = new Location(world, vec.getX() / 2, vec.getY() / 2, vec.getZ() / 2);
 
 		if (!world.isChunkLoaded(dropLoc.getBlockX() >> 4, dropLoc.getBlockZ() >> 4)) {
+			return;
+		}
+
+		LeadRemoveEvent event = new LeadRemoveEvent(null, wire);
+		Bukkit.getPluginManager().callEvent(event);
+
+		if (event.isCancelled()) {
 			return;
 		}
 
