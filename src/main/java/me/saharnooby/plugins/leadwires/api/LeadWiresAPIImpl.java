@@ -2,11 +2,13 @@ package me.saharnooby.plugins.leadwires.api;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import me.saharnooby.plugins.leadwires.LeadWires;
 import me.saharnooby.plugins.leadwires.evens.LeadCreatedEvent;
 import me.saharnooby.plugins.leadwires.evens.LeadRemovedEvent;
 import me.saharnooby.plugins.leadwires.tracker.WireTracker;
 import me.saharnooby.plugins.leadwires.wire.Wire;
 import me.saharnooby.plugins.leadwires.wire.WireStorage;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -99,4 +101,8 @@ public final class LeadWiresAPIImpl implements LeadWiresAPI {
 		});
 	}
 
+	@Override
+	public void registerMiniMessageParser(MiniMessage parser) {
+		LeadWires.setMiniMessageParser(parser);
+	}
 }

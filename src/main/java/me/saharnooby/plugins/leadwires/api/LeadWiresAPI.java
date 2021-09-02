@@ -2,6 +2,7 @@ package me.saharnooby.plugins.leadwires.api;
 
 import lombok.NonNull;
 import me.saharnooby.plugins.leadwires.wire.Wire;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -76,4 +77,5 @@ public interface LeadWiresAPI {
 	 */
 	void removeWire(@NonNull UUID uuid);
 
+	void registerMiniMessageParser(MiniMessage message);
 }

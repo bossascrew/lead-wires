@@ -10,7 +10,7 @@ A Spigot plugin that allows you to place "wires".
 
 To build, you need:
 - Maven
-- ~~JDK 8
+- ~~JDK 8~~
 - JDK 16
 - Paper 1.16.5+
 - `buildSettings.properties` file with `outputDir` property set to path where you want the JAR to appear
@@ -21,7 +21,7 @@ To build, you need:
 
 The plugin allows you to create and remove wires programmatically, so you or your developers can implement some awesome ideas like electricity, power poles, etc.
 This specific fork support Kyori Components to format messages (Click and Hover actions in messages.yml). See here for more information: https://docs.adventure.kyori.net/minimessage.html
-In some cases it might be useful to register an own MiniMessage parser. This can be done by calling ```java LeadWires.getApi().registerMiniMessageParser(myMiniMessage)```
+In some cases it might be useful to register an own MiniMessage parser. This can be done by calling ```LeadWires.getApi().registerMiniMessageParser(myMiniMessage)```
 Also, this fork supports Spigot Events and Listening. All events can be found here: https://github.com/bossascrew/lead-wires/tree/master/src/main/java/me/saharnooby/plugins/leadwires/evens
 
 ### Adding as a dependency
