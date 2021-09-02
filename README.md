@@ -10,7 +10,9 @@ A Spigot plugin that allows you to place "wires".
 
 To build, you need:
 - Maven
-- JDK 8
+- ~~JDK 8
+- JDK 16
+- Paper 1.16.5+
 - `buildSettings.properties` file with `outputDir` property set to path where you want the JAR to appear
 
 `git clone` the repository, `cd` into its dir and run `mvn clean install`.
@@ -18,6 +20,9 @@ To build, you need:
 ## Using as an API
 
 The plugin allows you to create and remove wires programmatically, so you or your developers can implement some awesome ideas like electricity, power poles, etc.
+This specific fork support Kyori Components to format messages (Click and Hover actions in messages.yml). See here for more information: https://docs.adventure.kyori.net/minimessage.html
+In some cases it might be useful to register an own MiniMessage parser. This can be done by calling ```java LeadWires.getApi().registerMiniMessageParser(myMiniMessage)```
+Also, this fork supports Spigot Events and Listening. All events can be found here: https://github.com/bossascrew/lead-wires/tree/master/src/main/java/me/saharnooby/plugins/leadwires/evens
 
 ### Adding as a dependency
 
@@ -29,11 +34,12 @@ Then, you need to add the plugin as a Maven dependency:
 <dependency>
     <groupId>me.saharnooby.plugins</groupId>
     <artifactId>lead-wires</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.5</version>
 </dependency>
 ```
 
-Alternatively, you can just download plugin from SpigotMC and link it yourself.
+~~Alternatively, you can just download plugin from SpigotMC and link it yourself.~~
+The spigot version does not support Kyori Components and Spigot Events
 
 Add to your `plugin.yml`: `depend: ['LeadWires']` so Spigot will know to load your plugin after LeadWires.
 
