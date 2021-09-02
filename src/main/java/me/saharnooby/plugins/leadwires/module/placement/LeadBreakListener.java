@@ -30,22 +30,22 @@ final class LeadBreakListener implements Listener {
 		checkBlockLater(e.getBlock());
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityExplode(EntityExplodeEvent e) {
 		checkBlocksLater(new ArrayList<>(e.blockList()));
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockExplode(BlockExplodeEvent e) {
 		checkBlocksLater(new ArrayList<>(e.blockList()));
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityChangeBlock(EntityChangeBlockEvent e) {
 		checkBlockLater(e.getBlock());
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onBlockBurn(BlockBurnEvent e) {
 		checkBlockLater(e.getBlock());
 	}
@@ -57,5 +57,4 @@ final class LeadBreakListener implements Listener {
 	private void checkBlocksLater(@NonNull Collection<Block> blocks) {
 		this.module.checkBlocksLater(blocks);
 	}
-
 }
