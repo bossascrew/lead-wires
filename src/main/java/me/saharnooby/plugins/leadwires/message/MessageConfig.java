@@ -50,6 +50,7 @@ public final class MessageConfig {
 		int index = 1;
 		for (Object o : args) {
 			templates.add(Template.of("param" + index, o.toString()));
+			index++;
 		}
 		return componentParser.parse(message, templates);
 	}
