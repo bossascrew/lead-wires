@@ -4,17 +4,16 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author saharNooby
@@ -38,7 +37,7 @@ public final class MessageConfig {
 	}
 
 	public MessageConfig() {
-		componentParser = MiniMessage.get();
+		componentParser = MiniMessage.miniMessage();
 	}
 
 	public Component format(@NonNull String key, Object... args) {
@@ -46,12 +45,12 @@ public final class MessageConfig {
 	}
 
 	public Component formatMessage(@NonNull String message, Object... args) {
-		List<Template> templates = new ArrayList<>();
+		List<TagResolver> templates = new ArrayList<>();
 		int index = 1;
 		for (Object o : args) {
-			templates.add(Template.of("param" + index, o.toString()));
+			templates.add(TagResolver.resolver("param" + index, Tag.inserting(Component.text(o.toString()))));
 			index++;
 		}
-		return componentParser.parse(message, templates);
+		return componentParser.deserialize(message, templates.toArray(TagResolver[]::new));
 	}
 }
